@@ -1,0 +1,70 @@
+.error404 {
+  text-align: center;
+  font-size: 35px;
+  color: red;
+}
+
+.auth-container {
+  background-color: #dcdcdc;
+  height: 100vh;
+  text-align: center;
+}
+
+.auth-input {
+  width: 20%;
+}
+
+.auth-title {
+  color: #363636;
+  margin: 0px;
+  padding-top: 40px;
+}
+
+.auth-btn {
+  margin: 10px 0px 20px;
+}
+
+.auth-text {
+  color: #363636;
+}
+
+.auth-link {
+  color: #4f4f4f;
+}
+
+.header-container {
+  height: 60px;
+  padding: 0px 10px;
+  display: flex;
+  border-bottom: 1px solid;
+  justify-content: space-between;
+}
+
+.header-title {
+  color: #363636;
+}
+
+.header-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.nav-container {
+  display: flex;
+  align-items: center;
+}
+
+.nav-item {
+  margin-left: 12px;
+}
+
+.nav-btn {
+  border: none;
+  background: none;
+}
+
+.nav-btn svg:hover {
+  fill: red;
+}
