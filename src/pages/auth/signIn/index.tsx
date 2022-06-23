@@ -1,5 +1,5 @@
 import { signInStart } from '../../../store/auth/actions';
-import { Box, Button, TextField } from '@material-ui/core';
+import { Box, Button, TextField } from '@mui/material';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
@@ -17,8 +17,7 @@ export default function SignIn() {
     dispatch(signInStart({ email: state.email, password: state.password }));
   };
   return (
-    <div className="auth-container">
-      <h1 className="auth-title">Login to List Keeper</h1>
+    <div className="auth-container text-align-center">
       <Box
         component="form"
         sx={{
@@ -26,10 +25,11 @@ export default function SignIn() {
           maxWidth: '100%',
           minHeight: '95vh',
           display: 'flex',
+          flexDirection: 'column',
           justifyContent: 'center',
-          alignItems: 'center',
         }}
       >
+        <h1 className="auth-title">Login to List Keeper</h1>
         <div>
           <TextField
             className="auth-input"

@@ -1,2 +1,7 @@
-const auth = 1;
-import _default from 'react-redux/es/components/connect';
+import { ItemStateType } from "./types";
+
+export default {
+    data: [],
+    isLoading: false,
+    error: null,
+} as ItemStateType;

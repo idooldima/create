@@ -1,5 +1,6 @@
 import { createAction } from 'redux-act';
-import { Credentials, ErrorType, User } from './types';
+import { ErrorType } from '../types';
+import { Credentials, User } from './types';
 
 export const signInStart = createAction<Credentials>('SIGN_IN_START');
 export const signInSuccess = createAction<User>('SIGN_IN_SUCCESS');

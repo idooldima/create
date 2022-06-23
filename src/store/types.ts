@@ -8,3 +8,7 @@ export type SagaActionType<T, M = Record<string, any>> = {
   readonly error: boolean;
   readonly meta?: M;
 };
+
+export type ErrorType = {
+  message: string;
+};

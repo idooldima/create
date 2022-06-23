@@ -1,3 +1,5 @@
+import { ErrorType } from "../types";
+
 export type Credentials = {
   email: string;
   password: string;
@@ -14,6 +16,4 @@ export type AuthStateType = {
   error: ErrorType | null;
 };
 
-export type ErrorType = {
-  message: string;
-};
+

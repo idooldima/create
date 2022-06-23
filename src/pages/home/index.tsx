@@ -1,9 +1,11 @@
 import Header from './header';
+import ListItems from './listItems';
 
-export default function Home() {
+export default function Main() {
   return (
-    <div>
+    <div className="home-container">
       <Header></Header>
+      <ListItems></ListItems>
     </div>
   );
 }

@@ -9,7 +9,8 @@ import {
   signUpError,
   logout,
 } from './actions';
-import { AuthStateType, ErrorType, User } from './types';
+import { AuthStateType, User } from './types';
+import { ErrorType } from '../types';
 
 export const onSignInStart = (state: AuthStateType) => ({
   ...state,

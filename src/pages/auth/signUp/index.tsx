@@ -1,4 +1,4 @@
-import { Box, Button, TextField } from '@material-ui/core';
+import { Box, Button, TextField } from '@mui/material';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -27,8 +27,7 @@ export default function SignUp() {
     dispatch(signUpStart({ email: state.email, password: state.password }));
   };
   return (
-    <div className="auth-container">
-      <h1 className="auth-title">Register to List Keeper</h1>
+    <div className="auth-container text-align-center">
       <Box
         component="form"
         sx={{
@@ -36,10 +35,11 @@ export default function SignUp() {
           maxWidth: '100%',
           minHeight: '95vh',
           display: 'flex',
+          flexDirection: 'column',
           justifyContent: 'center',
-          alignItems: 'center',
         }}
       >
+        <h1 className="auth-title">Register to List Keeper</h1>
         <div>
           <TextField
             className="auth-input"
@@ -122,6 +122,7 @@ export default function SignUp() {
         <div className="auth-text">
           Have account? <Link to={'/sign-in'}>Sign in</Link>
         </div>
+        <Link to={'/main'}>main</Link>
       </Box>
     </div>
   );

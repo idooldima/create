@@ -3,6 +3,9 @@ import './App.css';
 import SignIn from './pages/auth/signIn';
 import SignUp from './pages/auth/signUp';
 import Home from './pages/home';
+import AddList from './pages/home/addList';
+import DeleteList from './pages/home/listItems/deleteCard';
+import EditCard from './pages/home/listItems/editCard';
 
 function App() {
   return (
@@ -13,6 +16,9 @@ function App() {
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/main" element={<Home />} />
       </Routes>
+      <AddList></AddList>
+      <EditCard></EditCard>
+      <DeleteList></DeleteList>
     </div>
   );
 }
