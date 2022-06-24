@@ -5,3 +5,6 @@ export type Modal = {
 };
 
 export type ModalTypes = 'editList' | 'addList' | 'deleteList';
+
+// export type EditListModalType = { type: ‘deleteList’, props: DeleteListModalPropsType }
+// export type ModalTypes = EditListModalType

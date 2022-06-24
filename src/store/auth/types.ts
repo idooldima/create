@@ -1,13 +1,19 @@
-import { ErrorType } from "../types";
+import { NavigateFunction } from 'react-router-dom';
+import { ErrorType } from '../types';
 
 export type Credentials = {
   email: string;
   password: string;
+  navigate: NavigateFunction;
 };
 
 export type User = {
+  accessToken: string;
+  refreshToken: string;
+  user: {
   email: string;
-  token?: string;
+    id: string;
+  }
 };
 
 export type AuthStateType = {
@@ -15,5 +21,3 @@ export type AuthStateType = {
   isLoading: boolean;
   error: ErrorType | null;
 };
-
-

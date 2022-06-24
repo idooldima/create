@@ -1,2 +1,4 @@
-const auth = 1;
-import _default from 'react-redux/es/components/connect';
+import { ReduxStoreType } from '../types';
+import { ItemsTypes } from './types';
+
+export const itemListSelector = (state: ReduxStoreType): ItemsTypes => state.listItem.data;

@@ -3,10 +3,11 @@ import { Box, Button, TextField } from '@mui/material';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function SignIn() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const schema = yup.object().shape({
     email: yup.string().required().min(8),
     password: yup.string().required().min(8),
@@ -14,7 +15,7 @@ export default function SignIn() {
   const [state, setState] = useState({ email: '', password: '' });
   const [validateState, setValidateState] = useState({ errUsername: '', errPassword: '' });
   const signIn = () => {
-    dispatch(signInStart({ email: state.email, password: state.password }));
+    dispatch(signInStart({ email: state.email, password: state.password, navigate }));
   };
   return (
     <div className="auth-container text-align-center">

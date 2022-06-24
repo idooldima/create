@@ -1,7 +1,7 @@
-import { ItemStateType } from "./types";
+import { ItemStateType } from './types';
 
 export default {
-    data: [],
-    isLoading: false,
-    error: null,
+  data: [],
+  isLoading: false,
+  error: null,
 } as ItemStateType;

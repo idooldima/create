@@ -6,10 +6,8 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { Container } from '@mui/system';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import { useEffect } from 'react';
+import { useState } from 'react';
 import { addItemStart } from '../../../store/itemLists/actions';
-import { TurnedIn } from '@mui/icons-material';
-
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -26,14 +24,28 @@ const style = {
 export default function AddList() {
     const dispatch = useDispatch();
     const active = useSelector(isOpenModal('addList'));
-    useEffect(() => {
-        dispatch(addItemStart({ listTitle: 'user', category: 'dasd', isFavorites: true, listItem: [], date: '123456' }))
-    }, [])
+    const addItem = () => {
+        dispatch(
+            addItemStart({
+                listTitle: state.listTitle,
+                category: state.category,
+                isFavorites: state.isFavorites,
+                listItem: state.listItem,
+                date: state.date,
+            })
+        );
+    };
+    const [state, setState] = useState({
+        listTitle: '',
+        category: '',
+        isFavorites: false,
+        listItem: [],
+        date: 'date',
+    });
 
     const onCloseModal = () => {
-        dispatch(closeModal('addList'))
-    }
-
+      dispatch(closeModal('addList'));
+  };
 
     return (
         <Modal
@@ -45,39 +57,54 @@ export default function AddList() {
             <Box sx={style}>
                 <Container sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
                     <Typography variant="h4">Card</Typography>
-                    <div className='nav-btn'>
-                        <Button sx={{ border: 'none', padding: '0', color: 'black', width: 2 }}><FavoriteIcon></FavoriteIcon></Button>
-                        <Button sx={{ border: 'none', padding: '0', color: 'black' }} onClick={onCloseModal}><ClearIcon></ClearIcon></Button>
-                    </div>
-                </Container>
-                <Container>
-                    <Typography sx={{ textAlign: 'center' }}>Title of your card</Typography>
-                    <TextField fullWidth sx={{ marginBottom: 2 }}></TextField>
-                    <Typography>Select category and date</Typography>
-                    <Typography >Also you can create your own category in navbar menu</Typography>
-                    <div>
-                        <TextField sx={{ marginBottom: 2 }}> </TextField>
-                        {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
-
-                            <DateTimePicker
-                                label="Date&Time picker"
-                                value={value}
-                                onChange={handleChange}
-                                renderInput={(params) => <TextField {...params} />}
-                            />
-
-                        </LocalizationProvider> */}
-                    </div>
-                    <Typography sx={{ textAlign: 'center' }}>Add some cards items</Typography>
-                    <TextField fullWidth sx={{ marginBottom: 2 }}></TextField>
-                    <div className='text-align-center'>
-                        <Button sx={{ color: 'black', marginTop: 10 }}><AddBoxIcon></AddBoxIcon></Button>
-                    </div>
-                    <div >
-                        <Button fullWidth sx={{ color: 'black', backgroundColor: '#dcdcdc', textAlign: 'center' }}>SAVE</Button>
-                    </div>
-                </Container>
-            </Box>
-        </Modal>
-    );
+                  <div className="nav-btn">
+                      <Button sx={{ border: 'none', padding: '0', color: 'black', width: 2 }}>
+                          <FavoriteIcon></FavoriteIcon>
+                      </Button>
+                      <Button sx={{ border: 'none', padding: '0', color: 'black' }} onClick={onCloseModal}>
+                          <ClearIcon></ClearIcon>
+                      </Button>
+                  </div>
+              </Container>
+              <Container>
+                  <Typography sx={{ textAlign: 'center' }}>Title of your card</Typography>
+                  <TextField
+                      onChange={({ target: { value } }) => {
+                          setState({ ...state, listTitle: value });
+                      }}
+                      fullWidth
+                      sx={{ marginBottom: 2 }}
+                  ></TextField>
+                  <Typography>Select category and date</Typography>
+                  <Typography>Also you can create your own category in navbar menu</Typography>
+                  <div>
+                      <TextField
+                          onChange={({ target: { value } }) => {
+                              setState({ ...state, category: value });
+                          }}
+                          sx={{ marginBottom: 2 }}
+                      >
+                          {' '}
+                      </TextField>
+                  </div>
+                  <Typography sx={{ textAlign: 'center' }}>Add some cards items</Typography>
+                  <TextField fullWidth sx={{ marginBottom: 2 }}></TextField>
+                  <div className="text-align-center">
+                      <Button sx={{ color: 'black', marginTop: 10 }}>
+                          <AddBoxIcon></AddBoxIcon>
+                      </Button>
+                  </div>
+                  <div>
+                      <Button
+                          onClick={addItem}
+                          fullWidth
+                          sx={{ color: 'black', backgroundColor: '#dcdcdc', textAlign: 'center' }}
+                      >
+                          SAVE
+                      </Button>
+                  </div>
+              </Container>
+          </Box>
+      </Modal>
+  );
 }

@@ -1,13 +1,14 @@
 import { Box, Button, TextField } from '@mui/material';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 
 import { signUpStart } from '../../../store/auth/actions';
 
 export default function SignUp() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const schema = yup.object().shape({
     email: yup.string().required().min(8),
     password: yup.string().required().min(8),
@@ -24,7 +25,7 @@ export default function SignUp() {
     errPasswordConfirmation: '',
   });
   const signUp = () => {
-    dispatch(signUpStart({ email: state.email, password: state.password }));
+    dispatch(signUpStart({ email: state.email, password: state.password, navigate }));
   };
   return (
     <div className="auth-container text-align-center">
