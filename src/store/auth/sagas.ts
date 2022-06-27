@@ -46,12 +46,12 @@ export const signUpSaga = function* ({
   }
 };
 
-// export const logoutSaga = function* () {
-//     yield call(setSessionStorage, 'currentUser', null)
-// }
+export const logoutSaga = function* () {
+  yield call(setSessionStorage, 'currentUser', null);
+};
 
 export default function* root() {
   yield takeLatest(signInStart, signInSaga);
   yield takeLatest(signUpStart, signUpSaga);
-  // yield takeLatest(logout, logoutSaga)
+  yield takeLatest(logout, logoutSaga);
 }

@@ -2,12 +2,17 @@ import Navigation from './navigation';
 import Search from './search';
 import EventNoteIcon from '@mui/icons-material/EventNote';
 import { Grid } from '@mui/material';
+type Props = {
+  onSearch: (value: string) => void;
+  isFavorite: boolean;
+  setIsFavorite: (value: boolean) => void;
+};
 
-export default function Header() {
+export default function Header({ onSearch, isFavorite, setIsFavorite }: Props) {
   return (
     <div className="header-container">
       <Grid item xs={4}>
-        <Search />
+        <Search onChange={onSearch} />
       </Grid>
       <Grid item xs={4}>
         <div className="header-title text-align-center">
@@ -16,7 +21,7 @@ export default function Header() {
         </div>
       </Grid>
       <Grid item xs={4}>
-        <Navigation></Navigation>
+        <Navigation isFavorite={isFavorite} setIsFavorite={setIsFavorite}></Navigation>
       </Grid>
     </div>
   );

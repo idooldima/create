@@ -33,9 +33,6 @@ function App() {
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/main" element={<Home />} />
       </Routes>
-      <AddList></AddList>
-      <EditCard></EditCard>
-      <DeleteList></DeleteList>
     </div>
   );
 }

@@ -1,12 +1,13 @@
 import { Modal, Box, Typography, TextField, Button } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import ClearIcon from '@mui/icons-material/Clear';
 import { Container } from '@mui/system';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import { isOpenModal } from '../../../../store/modals/selectors';
-import { closeModal } from '../../../../store/modals/actions';
-import { itemListSelector } from '../../../../store/itemLists/selectors';
+import { ItemType } from '../../../../store/itemLists/types';
+import { useState } from 'react';
+import { editListItemStart } from '../../../../store/itemLists/actions';
+type Props = { item: ItemType; isOpen: boolean; closeModal: () => void };
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -20,40 +21,58 @@ const style = {
   p: 4,
 };
 
-export default function EditCard() {
-  const items = useSelector(itemListSelector);
+export default function EditCard({ item, isOpen, closeModal, }: Props) {
   const dispatch = useDispatch();
-  const active = useSelector(isOpenModal('editList'));
-  const onCloseModal = () => {
-    dispatch(closeModal('editList'));
+  const [state, setState] = useState(item);
+  const editItem = () => {
+    dispatch(editListItemStart(state))
+    closeModal()
+  }
+  const toggleFavorite = () => {
+    setState({ ...state, isFavorites: !state.isFavorites });
   };
-
+  console.log(state.isFavorites)
   return (
     <Modal
-      onClose={() => dispatch(closeModal('editList'))}
-      open={active}
+      onClose={closeModal}
+      open={isOpen}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
         <Container sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
-          <Typography variant="h4">Card</Typography>
+          <Typography variant="h4">{item.listTitle}</Typography>
           <div className="nav-btn">
-            <Button sx={{ border: 'none', padding: '0', color: 'black', width: 2 }}>
+            <Button sx={{ border: 'none', padding: '0', color: state.isFavorites ? 'red' : 'black', width: 2 }} onClick={toggleFavorite}>
               <FavoriteIcon></FavoriteIcon>
             </Button>
-            <Button sx={{ border: 'none', padding: '0', color: 'black' }} onClick={onCloseModal}>
+            <Button sx={{ border: 'none', padding: '0', color: 'black' }} onClick={closeModal}>
               <ClearIcon></ClearIcon>
             </Button>
           </div>
         </Container>
         <Container>
           <Typography sx={{ textAlign: 'center' }}>Title of your card</Typography>
-          <TextField fullWidth sx={{ marginBottom: 2 }}></TextField>
+          <TextField
+            fullWidth
+            sx={{ marginBottom: 2 }}
+            value={state.listTitle}
+            onChange={({ target: { value } }) => {
+              setState({ ...state, listTitle: value });
+            }}
+          ></TextField>
           <Typography>Select category and date</Typography>
           <Typography>Also you can create your own category in navbar menu</Typography>
           <div>
-            <TextField sx={{ marginBottom: 2 }}> </TextField>
+            <TextField
+              sx={{ marginBottom: 2 }}
+              value={state.category}
+              onChange={({ target: { value } }) => {
+                setState({ ...state, category: value });
+              }}
+            >
+              {' '}
+            </TextField>
           </div>
           <Typography sx={{ textAlign: 'center' }}>Add some cards items</Typography>
           <TextField fullWidth sx={{ marginBottom: 2 }}></TextField>
@@ -64,10 +83,11 @@ export default function EditCard() {
           </div>
           <div>
             <Button
+              onClick={editItem}
               fullWidth
               sx={{ color: 'black', backgroundColor: '#dcdcdc', textAlign: 'center' }}
             >
-              SAVE
+              SAVE CHANGES
             </Button>
           </div>
         </Container>

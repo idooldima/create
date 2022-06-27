@@ -6,9 +6,12 @@ import {
   addItemError,
   addItemStart,
   addItemSuccess,
-  deleteListItemSart,
+  deleteListItemStart,
   deleteListItemError,
   deleteListItemSuccess,
+  editListItemStart,
+  editListItemSuccess,
+  editListItemError,
 } from './actions';
 
 export const onAddItem = (state: ItemStateType) => ({
@@ -39,7 +42,24 @@ export const onDeleteItemSuccess = (state: ItemStateType, payload: ItemsTypes) =
   isLoading: false,
 });
 
-export const onDeleteItemError = (tate: ItemStateType, payload: ErrorType) => ({
+export const onDeleteItemError = (state: ItemStateType, payload: ErrorType) => ({
+  ...initialState,
+  isLoading: false,
+  error: payload,
+});
+
+export const onEditListItemStart = (state: ItemStateType) => ({
+  ...state,
+  isLoading: true,
+});
+
+export const onEditListItemSuccess = (state: ItemStateType, payload: ItemsTypes) => ({
+  ...state,
+  data: payload,
+  isLoading: false,
+});
+
+export const onEditListItemError = (state: ItemStateType, payload: ErrorType) => ({
   ...initialState,
   isLoading: false,
   error: payload,
@@ -49,8 +69,11 @@ export const ListItemReducer = createReducer<ItemStateType>({}, initialState)
   .on(addItemStart, onAddItem)
   .on(addItemSuccess, onAddItemSuccess)
   .on(addItemError, onAddItemError)
-  .on(deleteListItemSart, onDeleteItemStart)
+  .on(deleteListItemStart, onDeleteItemStart)
   .on(deleteListItemSuccess, onDeleteItemSuccess)
-  .on(deleteListItemError, onDeleteItemError);
+  .on(deleteListItemError, onDeleteItemError)
+  .on(editListItemStart, onEditListItemStart)
+  .on(editListItemSuccess, onEditListItemSuccess)
+  .on(editListItemError, onEditListItemError)
 
 export default ListItemReducer;

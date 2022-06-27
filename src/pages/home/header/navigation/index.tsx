@@ -4,45 +4,72 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import LogoutIcon from '@mui/icons-material/Logout';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useDispatch, useSelector } from 'react-redux';
-import { openModal } from '../../../../store/modals/actions';
 import { Button } from '@mui/material';
 import { currentUserSelector } from '../../../../store/auth/selectors';
+import AddList from '../../addList';
+import { useState } from 'react';
+import { logout } from '../../../../store/auth/actions';
+type Props = { isFavorite: boolean; setIsFavorite: (value: boolean) => void };
 
-export default function Navigation() {
-  const user = useSelector(currentUserSelector)
+export default function Navigation({ isFavorite, setIsFavorite }: Props) {
   const dispatch = useDispatch();
-  const onOpenModal = () => {
-    dispatch(openModal('addList'));
+  const [isOpen, setIsOpen] = useState(false);
+  const user = useSelector(currentUserSelector);
+  const logOut = () => {
+    dispatch(logout());
   };
+  const openModal = () => {
+    setIsOpen(true);
+  };
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+  const toggleFavorite = () => {
+    setIsFavorite(!isFavorite);
+  };
+
   return (
     <div className="nav-container">
       <div>
-        <Button sx={{ color: 'black' }} className="nav-btn">
+        <Button sx={{ color: 'black', border: 'none', background: 'none' }} className="nav-btn">
           <CalendarMonthIcon></CalendarMonthIcon>
         </Button>
       </div>
       <div>
-        <Button sx={{ color: 'black' }} className="nav-btn">
+        <Button
+          onClick={toggleFavorite}
+          sx={{ color: isFavorite ? 'red' : 'black', border: 'none', background: 'none' }}
+          className="nav-btn"
+        >
           <FavoriteIcon></FavoriteIcon>
         </Button>
       </div>
       <div>
-        <Button sx={{ color: 'black' }} className="nav-btn" onClick={onOpenModal}>
+        <Button
+          sx={{ color: 'black', border: 'none', background: 'none' }}
+          className="nav-btn"
+          onClick={openModal}
+        >
           <AddBoxIcon></AddBoxIcon>
         </Button>
       </div>
       <div>
-        <Button sx={{ color: 'black' }} className="nav-btn">
+        <Button sx={{ color: 'black', border: 'none', background: 'none' }} className="nav-btn">
           <BookmarkBorderIcon></BookmarkBorderIcon>
         </Button>
       </div>
 
       <div>{user?.user.email}</div>
       <div>
-        <Button sx={{ color: 'black' }} className="nav-btn">
+        <Button
+          onClick={logOut}
+          sx={{ color: 'black', border: 'none', background: 'none' }}
+          className="nav-btn"
+        >
           <LogoutIcon></LogoutIcon>
         </Button>
       </div>
+      <AddList isOpen={isOpen} closeModal={closeModal}></AddList>
     </div>
   );
 }

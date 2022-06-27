@@ -5,8 +5,11 @@ import {
   addItemStart,
   addItemSuccess,
   deleteListItemError,
-  deleteListItemSart,
+  deleteListItemStart,
   deleteListItemSuccess,
+  editListItemError,
+  editListItemStart,
+  editListItemSuccess,
 } from './actions';
 import { SagaActionType } from '../types';
 import axios from 'axios';
@@ -53,7 +56,30 @@ export const deleteListItemSaga = function* ({ payload }: SagaActionType<string>
   }
 };
 
+export const editListItemSaga = function* ({ payload }: SagaActionType<ItemType>): SagaIterator {
+  try {
+    const user = yield select(currentUserSelector);
+    const items = yield select(itemListSelector);
+    const result = yield call(
+      axios.put,
+      `https://your-list-app.herokuapp.com/api/list/${payload._id}`,
+      { ...payload },
+      {
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`,
+        },
+      }
+    );
+    const newItems = items.map((item: ItemType) => (item._id === payload._id) ? payload : item)
+    console.log(payload, newItems, items)
+    yield put(editListItemSuccess(newItems));
+  } catch (error: any) {
+    yield put(editListItemError(error));
+  }
+};
+
 export default function* root() {
   yield takeLatest(addItemStart, itemListSaga);
-  yield takeLatest(deleteListItemSart, deleteListItemSaga);
+  yield takeLatest(deleteListItemStart, deleteListItemSaga);
+  yield takeLatest(editListItemStart, editListItemSaga)
 }

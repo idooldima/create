@@ -11,9 +11,9 @@ export type User = {
   accessToken: string;
   refreshToken: string;
   user: {
-  email: string;
+    email: string;
     id: string;
-  }
+  };
 };
 
 export type AuthStateType = {

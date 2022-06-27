@@ -1,9 +1,10 @@
 import ClearIcon from '@mui/icons-material/Clear';
 import { Box, Button, Modal, Typography } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
-import { closeModal } from '../../../../store/modals/actions';
-import { isOpenModal } from '../../../../store/modals/selectors';
+import { useDispatch } from 'react-redux';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
+import { ItemType } from '../../../../store/itemLists/types';
+import { deleteListItemStart } from '../../../../store/itemLists/actions';
+type Props = { item: ItemType; isOpen: boolean; closeModal: () => void };
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -18,26 +19,27 @@ const style = {
   textAlign: 'center',
 };
 
-export default function DeleteList() {
+export default function DeleteCard({ item, isOpen, closeModal }: Props) {
   const dispatch = useDispatch();
-  const active = useSelector(isOpenModal('deleteList'));
-  const onCloseModal = () => {
-    dispatch(closeModal('deleteList'));
+  const onDeleteItem = () => {
+    if (item._id) {
+      dispatch(deleteListItemStart(item._id));
+    }
   };
 
   return (
     <Modal
-      onClose={() => dispatch(closeModal('deleteList'))}
-      open={active}
+      onClose={closeModal}
+      open={isOpen}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
         <Typography>You sure?</Typography>
-        <Button>
+        <Button onClick={onDeleteItem}>
           <ThumbUpAltIcon></ThumbUpAltIcon>
         </Button>
-        <Button onClick={onCloseModal}>
+        <Button onClick={closeModal}>
           <ClearIcon></ClearIcon>
         </Button>
       </Box>

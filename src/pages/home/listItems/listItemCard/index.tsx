@@ -1,56 +1,67 @@
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  Typography,
-  Container,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-} from '@mui/material';
+import { Button, Card, CardContent, Typography, Container, Checkbox } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import ClearIcon from '@mui/icons-material/Clear';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { useDispatch } from 'react-redux';
-import { openModal } from '../../../../store/modals/actions';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ItemType } from '../../../../store/itemLists/types';
-import { deleteListItemSart } from '../../../../store/itemLists/actions';
-type Props = { item: ItemType };
+import { useEffect, useState } from 'react';
+import DeleteCard from '../deleteCard';
+import EditCard from '../editCard';
+import { editListItemStart } from '../../../../store/itemLists/actions';
+import { useDispatch } from 'react-redux';
+type Props = { item: ItemType, };
 
-export default function ListItemCard({ item }: Props) {
+export default function ListItemCard({ item, }: Props) {
   const dispatch = useDispatch();
-  const onOpenModal = () => {
-    dispatch(openModal('editList'));
+  const [state, setState] = useState(item);
+  const [modals, setModals] = useState({
+    deleteModal: false,
+    editModal: false,
+  });
+
+  const toggleFavorite = () => {
+    setState({ ...state, isFavorites: !state.isFavorites });
   };
-  const onDeleteModal = () => {
-    // dispatch(openModal('deleteList'));
-    if (item._id) {
-      dispatch(deleteListItemSart(item._id));
-    }
+
+  const toggleModal = (type: 'deleteModal' | 'editModal') => () => {
+    setModals({ ...modals, [type]: !modals[type] });
   };
+  useEffect(() => {
+    dispatch(editListItemStart(state))
+  }, [state.isFavorites])
 
   return (
     <div className="list-card">
       <div className="list-item">
         <Card sx={{ minWidth: 420 }}>
           <CardContent sx={{ paddingBottom: 'inherit' }}>
-            <div className="list-btn">
+            <div className="list-header">
               <Typography variant="h4" component="div">
                 {item.listTitle}
               </Typography>
-              <div className="list-div">
-                <button className="nav-btn">
+              <div className="list-btn">
+                <Button
+                  onClick={toggleFavorite}
+                  size="small"
+                  sx={{ minWidth: 0, color: state.isFavorites ? 'red' : 'black', border: 'none' }}
+                  className="nav-btn"
+                >
                   <FavoriteIcon />
-                </button>
-                <button onClick={onOpenModal} className="nav-btn">
+                </Button>
+                <Button
+                  sx={{ minWidth: 0, color: 'black', border: 'none' }}
+                  onClick={toggleModal('editModal')}
+                  className="nav-btn"
+                >
                   <BorderColorIcon />
-                </button>
-                <button onClick={onDeleteModal} className="nav-btn">
+                </Button>
+                <Button
+                  sx={{ minWidth: 0, color: 'black', border: 'none' }}
+                  onClick={toggleModal('deleteModal')}
+                  className="nav-btn"
+                >
                   <ClearIcon />
-                </button>
+                </Button>
               </div>
             </div>
             <Container
@@ -62,7 +73,7 @@ export default function ListItemCard({ item }: Props) {
                 padding: 'unset',
               }}
             >
-              <Typography sx={{ mb: 1.5 }} color="text.secondary">
+              <Typography sx={{}} color="text.secondary">
                 {item.category}
               </Typography>
               <Typography sx={{ textAlign: 'end', fontSize: 12 }} color="text.secondary">
@@ -75,6 +86,28 @@ export default function ListItemCard({ item }: Props) {
               </Button>
             </div>
           </CardContent>
+          <Container
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              maxWidth: '420px',
+              flexWrap: 'wrap',
+              justifyContent: 'space-between',
+              padding: 0,
+              backgroundColor: '#eaeaea',
+              border: '1px solid #d2d2d2',
+            }}
+          >
+            <div>
+              <Typography sx={{}} color="text.secondary">
+                dasdasdasdasdadadadadadasdadadad
+              </Typography>
+            </div>
+            <div>
+              <Checkbox></Checkbox>
+            </div>
+          </Container>
+
           <div className="text-align-center list-share-btn">
             <Button size="small" fullWidth={true}>
               Share
@@ -82,6 +115,17 @@ export default function ListItemCard({ item }: Props) {
           </div>
         </Card>
       </div>
+      <EditCard
+        item={item}
+        isOpen={modals.editModal}
+        closeModal={toggleModal('editModal')}
+
+      ></EditCard>
+      <DeleteCard
+        item={item}
+        isOpen={modals.deleteModal}
+        closeModal={toggleModal('deleteModal')}
+      ></DeleteCard>
     </div>
   );
 }
