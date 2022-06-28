@@ -2,13 +2,10 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
-import { getSessionStorageData } from './lib';
+import { getSessionStorageData, ProtectedRoute } from './lib';
 import SignIn from './pages/auth/signIn';
 import SignUp from './pages/auth/signUp';
 import Home from './pages/home';
-import AddList from './pages/home/addList';
-import DeleteList from './pages/home/listItems/deleteCard';
-import EditCard from './pages/home/listItems/editCard';
 import { signInSuccess } from './store/auth/actions';
 
 function App() {
@@ -31,7 +28,14 @@ function App() {
         <Route path="*" element={<div className="error404">404!!!</div>} />
         <Route path="/" element={<SignUp />} />
         <Route path="/sign-in" element={<SignIn />} />
-        <Route path="/main" element={<Home />} />
+        <Route
+          path="/main"
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </div>
   );

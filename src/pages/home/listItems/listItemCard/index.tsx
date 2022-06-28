@@ -3,16 +3,20 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import ClearIcon from '@mui/icons-material/Clear';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { ItemType } from '../../../../store/itemLists/types';
 import { useEffect, useState } from 'react';
 import DeleteCard from '../deleteCard';
 import EditCard from '../editCard';
 import { editListItemStart } from '../../../../store/itemLists/actions';
 import { useDispatch } from 'react-redux';
-type Props = { item: ItemType, };
+import { map } from 'lodash';
+import { format } from 'date-fns';
+type Props = { item: ItemType };
 
-export default function ListItemCard({ item, }: Props) {
+export default function ListItemCard({ item }: Props) {
   const dispatch = useDispatch();
+  const [showSubTask, setShowSubTask] = useState(false)
   const [state, setState] = useState(item);
   const [modals, setModals] = useState({
     deleteModal: false,
@@ -23,12 +27,23 @@ export default function ListItemCard({ item, }: Props) {
     setState({ ...state, isFavorites: !state.isFavorites });
   };
 
+  const toggleShowSubTask = () => {
+    setShowSubTask(!showSubTask)
+  }
+  console.log(showSubTask)
+
   const toggleModal = (type: 'deleteModal' | 'editModal') => () => {
     setModals({ ...modals, [type]: !modals[type] });
   };
+
   useEffect(() => {
-    dispatch(editListItemStart(state))
-  }, [state.isFavorites])
+    dispatch(editListItemStart(state));
+  }, [state]);
+
+  useEffect(() => {
+    setState(item);
+  }, [item]);
+
 
   return (
     <div className="list-card">
@@ -81,33 +96,53 @@ export default function ListItemCard({ item, }: Props) {
               </Typography>
             </Container>
             <div className="list-task-btn text-align-center">
-              <Button>
+              <div>{format(new Date(item.date), 'MM/dd/yyyy')}</div>
+              {showSubTask ? <Button onClick={toggleShowSubTask}>
                 <KeyboardArrowDownIcon />
-              </Button>
+              </Button> : <Button onClick={toggleShowSubTask}><KeyboardArrowUpIcon /></Button>}
+
             </div>
           </CardContent>
-          <Container
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              maxWidth: '420px',
-              flexWrap: 'wrap',
-              justifyContent: 'space-between',
-              padding: 0,
-              backgroundColor: '#eaeaea',
-              border: '1px solid #d2d2d2',
-            }}
-          >
+          {showSubTask ?
             <div>
-              <Typography sx={{}} color="text.secondary">
-                dasdasdasdasdadadadadadasdadadad
-              </Typography>
-            </div>
-            <div>
-              <Checkbox></Checkbox>
-            </div>
-          </Container>
-
+              {map(state.listItem, (item) => (
+                <Container
+                  key={item.id}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    maxWidth: '420px',
+                    flexWrap: 'wrap',
+                    justifyContent: 'space-between',
+                    padding: 0,
+                    backgroundColor: '#eaeaea',
+                    border: '1px solid #d2d2d2',
+                  }}
+                >
+                  <div>
+                    <Typography
+                      sx={{ color: item.complete ? '#d2d2d2 ' : 'black' }}
+                      color="text.secondary"
+                    >
+                      {item.task}
+                    </Typography>
+                  </div>
+                  <div>
+                    <Checkbox
+                      onChange={() => {
+                        setState({
+                          ...state,
+                          listItem: state.listItem.map((task) =>
+                            task.id === item.id ? { ...task, complete: !task.complete } : task
+                          ),
+                        });
+                      }}
+                    ></Checkbox>
+                  </div>
+                </Container>
+              ))}
+            </div> : <div></div>
+          }
           <div className="text-align-center list-share-btn">
             <Button size="small" fullWidth={true}>
               Share
@@ -119,13 +154,12 @@ export default function ListItemCard({ item, }: Props) {
         item={item}
         isOpen={modals.editModal}
         closeModal={toggleModal('editModal')}
-
       ></EditCard>
       <DeleteCard
         item={item}
         isOpen={modals.deleteModal}
         closeModal={toggleModal('deleteModal')}
       ></DeleteCard>
-    </div>
+    </div >
   );
 }

@@ -74,6 +74,6 @@ export const ListItemReducer = createReducer<ItemStateType>({}, initialState)
   .on(deleteListItemError, onDeleteItemError)
   .on(editListItemStart, onEditListItemStart)
   .on(editListItemSuccess, onEditListItemSuccess)
-  .on(editListItemError, onEditListItemError)
+  .on(editListItemError, onEditListItemError);
 
 export default ListItemReducer;

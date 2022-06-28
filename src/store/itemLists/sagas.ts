@@ -70,8 +70,8 @@ export const editListItemSaga = function* ({ payload }: SagaActionType<ItemType>
         },
       }
     );
-    const newItems = items.map((item: ItemType) => (item._id === payload._id) ? payload : item)
-    console.log(payload, newItems, items)
+    const newItems = items.map((item: ItemType) => (item._id === payload._id ? payload : item));
+
     yield put(editListItemSuccess(newItems));
   } catch (error: any) {
     yield put(editListItemError(error));
@@ -81,5 +81,5 @@ export const editListItemSaga = function* ({ payload }: SagaActionType<ItemType>
 export default function* root() {
   yield takeLatest(addItemStart, itemListSaga);
   yield takeLatest(deleteListItemStart, deleteListItemSaga);
-  yield takeLatest(editListItemStart, editListItemSaga)
+  yield takeLatest(editListItemStart, editListItemSaga);
 }

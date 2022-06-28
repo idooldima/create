@@ -2,7 +2,8 @@ import { ErrorType } from '../types';
 
 export type TaskType = {
   id?: string;
-  title: string;
+  task: string;
+  complete: boolean;
 };
 
 export type ItemType = {

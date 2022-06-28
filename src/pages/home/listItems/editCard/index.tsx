@@ -7,6 +7,8 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import { ItemType } from '../../../../store/itemLists/types';
 import { useState } from 'react';
 import { editListItemStart } from '../../../../store/itemLists/actions';
+import { map } from 'lodash';
+import { v4 as uuidv4 } from 'uuid';
 type Props = { item: ItemType; isOpen: boolean; closeModal: () => void };
 
 const style = {
@@ -21,17 +23,28 @@ const style = {
   p: 4,
 };
 
-export default function EditCard({ item, isOpen, closeModal, }: Props) {
+export default function EditCard({ item, isOpen, closeModal }: Props) {
   const dispatch = useDispatch();
   const [state, setState] = useState(item);
   const editItem = () => {
-    dispatch(editListItemStart(state))
-    closeModal()
-  }
+    dispatch(editListItemStart(state));
+    closeModal();
+  };
   const toggleFavorite = () => {
     setState({ ...state, isFavorites: !state.isFavorites });
   };
-  console.log(state.isFavorites)
+
+  const addSubTask = () => {
+    const newSubTask = {
+      id: uuidv4(),
+      task: '',
+      complete: false,
+    };
+    setState({
+      ...state,
+      listItem: [...state.listItem, newSubTask],
+    });
+  };
   return (
     <Modal
       onClose={closeModal}
@@ -43,7 +56,15 @@ export default function EditCard({ item, isOpen, closeModal, }: Props) {
         <Container sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
           <Typography variant="h4">{item.listTitle}</Typography>
           <div className="nav-btn">
-            <Button sx={{ border: 'none', padding: '0', color: state.isFavorites ? 'red' : 'black', width: 2 }} onClick={toggleFavorite}>
+            <Button
+              sx={{
+                border: 'none',
+                padding: '0',
+                color: state.isFavorites ? 'red' : 'black',
+                width: 2,
+              }}
+              onClick={toggleFavorite}
+            >
               <FavoriteIcon></FavoriteIcon>
             </Button>
             <Button sx={{ border: 'none', padding: '0', color: 'black' }} onClick={closeModal}>
@@ -75,9 +96,36 @@ export default function EditCard({ item, isOpen, closeModal, }: Props) {
             </TextField>
           </div>
           <Typography sx={{ textAlign: 'center' }}>Add some cards items</Typography>
-          <TextField fullWidth sx={{ marginBottom: 2 }}></TextField>
+          <div>
+            {map(state.listItem, (item) => (
+              <div className="display-flex align-items" key={item.id}>
+                <TextField
+                  value={item.task}
+                  onChange={({ target: { value } }) => {
+                    setState({
+                      ...state,
+                      listItem: state.listItem.map((task) =>
+                        task.id === item.id ? { ...task, task: value } : task
+                      ),
+                    });
+                  }}
+                  sx={{ paddingBottom: 2, width: '87%' }}
+                ></TextField>
+                <Button
+                  onClick={() =>
+                    setState({
+                      ...state,
+                      listItem: state.listItem.filter((task) => task.id !== item.id),
+                    })
+                  }
+                >
+                  X
+                </Button>
+              </div>
+            ))}
+          </div>
           <div className="text-align-center">
-            <Button sx={{ color: 'black', marginTop: 10 }}>
+            <Button sx={{ color: 'black', marginTop: 10 }} onClick={addSubTask}>
               <AddBoxIcon></AddBoxIcon>
             </Button>
           </div>

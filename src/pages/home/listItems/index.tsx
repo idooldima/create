@@ -3,9 +3,9 @@ import { useSelector } from 'react-redux';
 import { itemListSelector } from '../../../store/itemLists/selectors';
 import { ItemsTypes } from '../../../store/itemLists/types';
 import ListItemCard from './listItemCard';
-type Props = { listItems: ItemsTypes, };
+type Props = { listItems: ItemsTypes };
 
-export default function ListItems({ listItems, }: Props) {
+export default function ListItems({ listItems }: Props) {
   return (
     <div className="list-item-container">
       {map(listItems, (item) => (

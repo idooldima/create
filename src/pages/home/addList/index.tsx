@@ -4,11 +4,13 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { Container } from '@mui/system';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { addItemStart } from '../../../store/itemLists/actions';
-import { v4 as uuidv4 } from 'uuid'
-// import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-// import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { v4 as uuidv4 } from 'uuid';
+import { ItemType } from '../../../store/itemLists/types';
+import { map } from 'lodash';
+import { DatePicker, DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 type Props = { isOpen: boolean; closeModal: () => void };
 
@@ -38,28 +40,46 @@ export default function AddList({ isOpen, closeModal }: Props) {
     );
     closeModal();
   };
-  const [state, setState] = useState({
+
+  const initialState = {
     listTitle: '',
     category: '',
     isFavorites: false,
-    listItem: [],
-    date: 'date',
-  });
+    listItem: [
+      {
+        id: uuidv4(),
+        task: '',
+        complete: false,
+      },
+    ],
+    date: new Date('2022-06-30T21:11:54').toISOString(),
+  };
+  const [state, setState] = useState<ItemType>(initialState);
+
+  const handleChange = (newValue: Date | null) => {
+    setState({ ...state, date: newValue?.toISOString() || initialState.date })
+  };
   const toggleFavorite = () => {
     setState({ ...state, isFavorites: !state.isFavorites });
   };
 
-  // const addSubTask = (userInput: string) => {
-  //   if (userInput) {
-  //     const newSubTask = {
-  //       id: uuidv4(),
-  //       task: userInput,
-  //       complete: false,
-  //     };
-  //     setState({ ...state, listItem: [...state.listItem, newSubTask] });
-  //   }
-  // };
+  const addSubTask = () => {
+    const newSubTask = {
+      id: uuidv4(),
+      task: '',
+      complete: false,
+    };
+    setState({
+      ...state,
+      listItem: [...state.listItem, newSubTask],
+    });
+  };
 
+  useEffect(() => {
+    if (!isOpen) {
+      setState(initialState);
+    }
+  }, [isOpen]);
 
   return (
     <Modal
@@ -73,7 +93,12 @@ export default function AddList({ isOpen, closeModal }: Props) {
           <Typography variant="h4">Card</Typography>
           <div className="nav-btn">
             <Button
-              sx={{ border: 'none', padding: '0', width: 2, color: state.isFavorites ? 'red' : 'black' }}
+              sx={{
+                border: 'none',
+                padding: '0',
+                width: 2,
+                color: state.isFavorites ? 'red' : 'black',
+              }}
               onClick={toggleFavorite}
             >
               <FavoriteIcon></FavoriteIcon>
@@ -103,24 +128,45 @@ export default function AddList({ isOpen, closeModal }: Props) {
             >
               {' '}
             </TextField>
-            {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
-                disableFuture
-                label="Responsive"
-                openTo="year"
-                views={['year', 'month', 'day']}
-                value={value}
-                onChange={(newValue) => {
-                  setValue(newValue);
-                }}
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DesktopDatePicker
+                inputFormat="MM/dd/yyyy"
+                value={new Date(state.date)}
+                onChange={handleChange}
                 renderInput={(params) => <TextField {...params} />}
               />
-            </LocalizationProvider> */}
+            </LocalizationProvider>
           </div>
           <Typography sx={{ textAlign: 'center' }}>Add some cards items</Typography>
-          <TextField fullWidth sx={{ marginBottom: 2 }}></TextField>
+          <div>
+            {map(state.listItem, (item) => (
+              <div className="display-flex align-items" key={item.id}>
+                <TextField
+                  onChange={({ target: { value } }) => {
+                    setState({
+                      ...state,
+                      listItem: state.listItem.map((task) =>
+                        task.id === item.id ? { ...task, task: value } : task
+                      ),
+                    });
+                  }}
+                  sx={{ paddingBottom: 2, width: '87%' }}
+                ></TextField>
+                <Button
+                  onClick={() =>
+                    setState({
+                      ...state,
+                      listItem: state.listItem.filter((task) => task.id !== item.id),
+                    })
+                  }
+                >
+                  X
+                </Button>
+              </div>
+            ))}
+          </div>
           <div className="text-align-center">
-            <Button sx={{ color: 'black', marginTop: 10 }}>
+            <Button sx={{ color: 'black', marginTop: 10 }} onClick={addSubTask}>
               <AddBoxIcon></AddBoxIcon>
             </Button>
           </div>
@@ -135,6 +181,6 @@ export default function AddList({ isOpen, closeModal }: Props) {
           </div>
         </Container>
       </Box>
-    </Modal >
+    </Modal>
   );
 }

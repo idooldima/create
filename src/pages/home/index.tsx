@@ -7,11 +7,13 @@ import ListItems from './listItems';
 export default function Main() {
   const [keyWord, setKeyWord] = useState('');
   const [isFavorite, setIsFavorite] = useState(false);
-  const filteredItems = useSelector(filteredItemListSelector(keyWord, isFavorite));
+  const filteredItems = useSelector(
+    filteredItemListSelector(keyWord, isFavorite === false ? undefined : isFavorite)
+  );
   return (
     <div className="home-container">
       <Header onSearch={setKeyWord} isFavorite={isFavorite} setIsFavorite={setIsFavorite}></Header>
-      <ListItems listItems={filteredItems}  ></ListItems>
+      <ListItems listItems={filteredItems}></ListItems>
     </div>
   );
 }

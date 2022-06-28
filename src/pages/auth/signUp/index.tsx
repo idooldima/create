@@ -97,7 +97,6 @@ export default function SignUp() {
               .then(() => setValidateState({ ...validateState, errPasswordConfirmation: '' }))
               .catch(function (err) {
                 setValidateState({ ...validateState, errPasswordConfirmation: err.errors[0] });
-                console.log(err.errors);
               });
           }}
           type="password"

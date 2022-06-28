@@ -1,5 +1,22 @@
 import { currentUserSelector } from '../store/auth/selectors';
 import store from '../store/store';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+
+export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const loggedIn = useIsUserLoggedIn();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!loggedIn) {
+      navigate('/');
+    }
+  }, [loggedIn]);
+  if (loggedIn) {
+    return <>{children}</>;
+  }
+  return <Navigate to={'/'} />;
+};
 
 export const isUserSignedUp = (): boolean => {
   const state = store.getState();
@@ -7,9 +24,8 @@ export const isUserSignedUp = (): boolean => {
   return !!user && !!user.accessToken;
 };
 
-export function isUserLoggedIn() {
-  const state = store.getState();
-  const user = currentUserSelector(state);
+export function useIsUserLoggedIn() {
+  const user = useSelector(currentUserSelector);
   return user && !!user.accessToken;
 }
 
