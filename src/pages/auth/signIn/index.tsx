@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
 import { Link, useNavigate } from 'react-router-dom';
-import { Height } from '@mui/icons-material';
+import { style } from '../auth.styles';
 
 export default function SignIn() {
   const dispatch = useDispatch();
@@ -19,24 +19,11 @@ export default function SignIn() {
     dispatch(signInStart({ email: state.email, password: state.password, navigate }));
   };
   return (
-    <Box
-      component="form"
-      sx={{
-        boxSizing: 'border-box',
-        maxWidth: '100%',
-        minHeight: '95vh',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        textAlign: 'center',
-        backgroundColor: '#dcdcdc',
-        height: '100vh',
-      }}
-    >
+    <Box component="form" sx={style.box}>
       <h1 className="auth-title">Login to List Keeper</h1>
       <div>
         <TextField
-          sx={{ width: '30%' }}
+          sx={style.input}
           className="auth-input"
           onChange={({ target: { value } }) => {
             setState({ ...state, email: value });
@@ -57,7 +44,7 @@ export default function SignIn() {
       </div>
       <div>
         <TextField
-          sx={{ width: '30%' }}
+          sx={style.input}
           className="auth-input"
           onChange={({ target: { value } }) => {
             setState({ ...state, password: value });

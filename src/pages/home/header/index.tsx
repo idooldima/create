@@ -11,16 +11,16 @@ type Props = {
 export default function Header({ onSearch, isFavorite, setIsFavorite }: Props) {
   return (
     <div className="header-container">
-      <Grid item xs={4}>
+      <Grid>
         <Search onChange={onSearch} />
       </Grid>
-      <Grid item xs={4}>
+      <Grid>
         <div className="header-title text-align-center">
           <EventNoteIcon fontSize="large" />
           <h1>List Keeper</h1>
         </div>
       </Grid>
-      <Grid item xs={4}>
+      <Grid>
         <Navigation isFavorite={isFavorite} setIsFavorite={setIsFavorite} />
       </Grid>
     </div>

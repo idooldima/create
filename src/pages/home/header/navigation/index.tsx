@@ -9,6 +9,7 @@ import { currentUserSelector } from '../../../../store/auth/selectors';
 import AddList from '../../addList';
 import { useState } from 'react';
 import { logout } from '../../../../store/auth/actions';
+import { style } from '../header.styles';
 type Props = { isFavorite: boolean; setIsFavorite: (value: boolean) => void };
 
 export default function Navigation({ isFavorite, setIsFavorite }: Props) {
@@ -31,41 +32,33 @@ export default function Navigation({ isFavorite, setIsFavorite }: Props) {
   return (
     <div className="nav-container">
       <div>
-        <Button sx={{ color: 'black', border: 'none', background: 'none' }} className="nav-btn">
+        <Button sx={style.headerBtn} className="nav-btn">
           <CalendarMonthIcon />
         </Button>
       </div>
       <div>
         <Button
           onClick={toggleFavorite}
-          sx={{ color: isFavorite ? 'red' : 'black', border: 'none', background: 'none' }}
+          sx={{ color: isFavorite ? 'red' : 'black' }}
           className="nav-btn"
         >
           <FavoriteIcon />
         </Button>
       </div>
       <div>
-        <Button
-          sx={{ color: 'black', border: 'none', background: 'none' }}
-          className="nav-btn"
-          onClick={openModal}
-        >
+        <Button sx={style.headerBtn} className="nav-btn" onClick={openModal}>
           <AddBoxIcon />
         </Button>
       </div>
       <div>
-        <Button sx={{ color: 'black', border: 'none', background: 'none' }} className="nav-btn">
+        <Button sx={style.headerBtn} className="nav-btn">
           <BookmarkBorderIcon />
         </Button>
       </div>
 
       <div>{user?.user.email}</div>
       <div>
-        <Button
-          onClick={logOut}
-          sx={{ color: 'black', border: 'none', background: 'none' }}
-          className="nav-btn"
-        >
+        <Button onClick={logOut} sx={style.headerBtn} className="nav-btn">
           <LogoutIcon />
         </Button>
       </div>

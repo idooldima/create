@@ -13,11 +13,12 @@ import { useDispatch } from 'react-redux';
 import { map } from 'lodash';
 import { format } from 'date-fns';
 import SubTask from './subTask';
+import { style } from './listItemCard.styles';
 type Props = { item: ItemType };
 
 export default function ListItemCard({ item }: Props) {
   const dispatch = useDispatch();
-  const [showSubTask, setShowSubTask] = useState(false)
+  const [showSubTask, setShowSubTask] = useState(false);
   const [state, setState] = useState(item);
   const [modals, setModals] = useState({
     deleteModal: false,
@@ -29,8 +30,8 @@ export default function ListItemCard({ item }: Props) {
   };
 
   const toggleShowSubTask = () => {
-    setShowSubTask(!showSubTask)
-  }
+    setShowSubTask(!showSubTask);
+  };
 
   const toggleModal = (type: 'deleteModal' | 'editModal') => () => {
     setModals({ ...modals, [type]: !modals[type] });
@@ -44,11 +45,10 @@ export default function ListItemCard({ item }: Props) {
     setState(item);
   }, [item]);
 
-
   return (
     <div className="list-card">
       <div className="list-item">
-        <Card sx={{ minWidth: 420 }}>
+        <Card sx={style.card}>
           <CardContent sx={{ paddingBottom: 'inherit' }}>
             <div className="list-header">
               <Typography variant="h4" component="div">
@@ -63,52 +63,42 @@ export default function ListItemCard({ item }: Props) {
                 >
                   <FavoriteIcon />
                 </Button>
-                <Button
-                  sx={{ minWidth: 0, color: 'black', border: 'none' }}
-                  onClick={toggleModal('editModal')}
-                  className="nav-btn"
-                >
+                <Button sx={style.taskBtn} onClick={toggleModal('editModal')} className="nav-btn">
                   <BorderColorIcon />
                 </Button>
-                <Button
-                  sx={{ minWidth: 0, color: 'black', border: 'none' }}
-                  onClick={toggleModal('deleteModal')}
-                  className="nav-btn"
-                >
+                <Button sx={style.taskBtn} onClick={toggleModal('deleteModal')} className="nav-btn">
                   <ClearIcon />
                 </Button>
               </div>
             </div>
-            <Container
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                margin: 'unset',
-                padding: 'unset',
-              }}
-            >
-              <Typography sx={{}} color="text.secondary">
-                {item.category}
-              </Typography>
-              <Typography sx={{ textAlign: 'end', fontSize: 12 }} color="text.secondary">
+            <Container sx={style.container}>
+              <Typography color="text.secondary">{item.category}</Typography>
+              <Typography sx={style.itemId} color="text.secondary">
                 {item?._id}
               </Typography>
             </Container>
             <div className="list-task-btn text-align-center">
               <div>{format(new Date(item.date), 'MM/dd/yyyy')}</div>
-              {showSubTask ?
-                <Button onClick={toggleShowSubTask}><KeyboardArrowDownIcon /></Button>
-                :
-                <Button onClick={toggleShowSubTask}><KeyboardArrowUpIcon /></Button>}
+              {showSubTask ? (
+                <Button onClick={toggleShowSubTask}>
+                  <KeyboardArrowDownIcon />
+                </Button>
+              ) : (
+                <Button onClick={toggleShowSubTask}>
+                  <KeyboardArrowUpIcon />
+                </Button>
+              )}
             </div>
           </CardContent>
-          {showSubTask ?
+          {showSubTask ? (
             <div>
               {map(state.listItem, (item) => (
                 <SubTask key={item.id} item={item}></SubTask>
               ))}
-            </div> : <div></div>
-          }
+            </div>
+          ) : (
+            <div></div>
+          )}
           <div className="text-align-center list-share-btn">
             <Button size="small" fullWidth={true}>
               Share
@@ -116,16 +106,8 @@ export default function ListItemCard({ item }: Props) {
           </div>
         </Card>
       </div>
-      <EditCard
-        item={item}
-        isOpen={modals.editModal}
-        closeModal={toggleModal('editModal')}
-      />
-      <DeleteCard
-        item={item}
-        isOpen={modals.deleteModal}
-        closeModal={toggleModal('deleteModal')}
-      />
-    </div >
+      <EditCard item={item} isOpen={modals.editModal} closeModal={toggleModal('editModal')} />
+      <DeleteCard item={item} isOpen={modals.deleteModal} closeModal={toggleModal('deleteModal')} />
+    </div>
   );
 }
