@@ -7,6 +7,7 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import { useEffect, useState } from 'react';
 import { addItemStart } from '../../../store/itemLists/actions';
 import { v4 as uuidv4 } from 'uuid';
+import * as yup from 'yup';
 import { ItemType } from '../../../store/itemLists/types';
 import { map } from 'lodash';
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
@@ -31,6 +32,11 @@ export default function AddList({ isOpen, closeModal }: Props) {
     date: new Date('2022-06-30T21:11:54').toISOString(),
   };
   const [state, setState] = useState<ItemType>(initialState);
+  const [validateState, setValidateState] = useState({ errTitle: '', errCategory: '' });
+  const schema = yup.object().shape({
+    title: yup.string().required(),
+    category: yup.string().required(),
+  });
 
   const addItem = () => {
     dispatch(
@@ -93,6 +99,12 @@ export default function AddList({ isOpen, closeModal }: Props) {
           <TextField
             onChange={({ target: { value } }) => {
               setState({ ...state, listTitle: value });
+              schema
+                .validateAt('title', { title: value })
+                .then(() => setValidateState({ ...validateState, errTitle: '' }))
+                .catch(function (err) {
+                  setValidateState({ ...validateState, errTitle: err.errors[0] });
+                });
             }}
             fullWidth
             sx={style.marginBottom}
@@ -103,6 +115,12 @@ export default function AddList({ isOpen, closeModal }: Props) {
             <TextField
               onChange={({ target: { value } }) => {
                 setState({ ...state, category: value });
+                schema
+                  .validateAt('category', { category: value })
+                  .then(() => setValidateState({ ...validateState, errCategory: '' }))
+                  .catch(function (err) {
+                    setValidateState({ ...validateState, errCategory: err.errors[0] });
+                  });
               }}
               sx={style.marginBottom}
             >
@@ -151,7 +169,11 @@ export default function AddList({ isOpen, closeModal }: Props) {
             </Button>
           </div>
           <div>
-            <Button onClick={addItem} fullWidth sx={style.addTaskBtn}>
+            <Button
+              disabled={
+                !state.listTitle || !state.category || !!validateState.errCategory || !!validateState.errTitle
+              }
+              onClick={addItem} fullWidth sx={style.addTaskBtn}>
               SAVE
             </Button>
           </div>
