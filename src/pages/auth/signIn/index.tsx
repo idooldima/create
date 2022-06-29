@@ -9,12 +9,12 @@ import { Height } from '@mui/icons-material';
 export default function SignIn() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [state, setState] = useState({ email: '', password: '' });
+  const [validateState, setValidateState] = useState({ errUsername: '', errPassword: '' });
   const schema = yup.object().shape({
     email: yup.string().required().min(8),
     password: yup.string().required().min(8),
   });
-  const [state, setState] = useState({ email: '', password: '' });
-  const [validateState, setValidateState] = useState({ errUsername: '', errPassword: '' });
   const signIn = () => {
     dispatch(signInStart({ email: state.email, password: state.password, navigate }));
   };

@@ -9,6 +9,12 @@ import { signUpStart } from '../../../store/auth/actions';
 export default function SignUp() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [state, setState] = useState({ email: '', password: '', passwordConfirmation: '' });
+  const [validateState, setValidateState] = useState({
+    errUsername: '',
+    errPassword: '',
+    errPasswordConfirmation: '',
+  });
   const schema = yup.object().shape({
     email: yup.string().required().min(8),
     password: yup.string().required().min(8),
@@ -17,12 +23,6 @@ export default function SignUp() {
       .test('passwords-match', 'Passwords must match', function (value) {
         return state.password === value;
       }),
-  });
-  const [state, setState] = useState({ email: '', password: '', passwordConfirmation: '' });
-  const [validateState, setValidateState] = useState({
-    errUsername: '',
-    errPassword: '',
-    errPasswordConfirmation: '',
   });
   const signUp = () => {
     dispatch(signUpStart({ email: state.email, password: state.password, navigate }));

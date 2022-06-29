@@ -26,10 +26,12 @@ const style = {
 export default function EditCard({ item, isOpen, closeModal }: Props) {
   const dispatch = useDispatch();
   const [state, setState] = useState(item);
+
   const editItem = () => {
     dispatch(editListItemStart(state));
     closeModal();
   };
+
   const toggleFavorite = () => {
     setState({ ...state, isFavorites: !state.isFavorites });
   };
@@ -82,7 +84,7 @@ export default function EditCard({ item, isOpen, closeModal }: Props) {
               setState({ ...state, listTitle: value });
             }}
           ></TextField>
-          <Typography>Select category and date</Typography>
+          <Typography>Change category</Typography>
           <Typography>Also you can create your own category in navbar menu</Typography>
           <div>
             <TextField
@@ -119,7 +121,7 @@ export default function EditCard({ item, isOpen, closeModal }: Props) {
                     })
                   }
                 >
-                  X
+                  <ClearIcon />
                 </Button>
               </div>
             ))}

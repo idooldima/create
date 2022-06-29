@@ -21,7 +21,7 @@ export default function Header({ onSearch, isFavorite, setIsFavorite }: Props) {
         </div>
       </Grid>
       <Grid item xs={4}>
-        <Navigation isFavorite={isFavorite} setIsFavorite={setIsFavorite}></Navigation>
+        <Navigation isFavorite={isFavorite} setIsFavorite={setIsFavorite} />
       </Grid>
     </div>
   );

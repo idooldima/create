@@ -32,7 +32,7 @@ export default function Navigation({ isFavorite, setIsFavorite }: Props) {
     <div className="nav-container">
       <div>
         <Button sx={{ color: 'black', border: 'none', background: 'none' }} className="nav-btn">
-          <CalendarMonthIcon></CalendarMonthIcon>
+          <CalendarMonthIcon />
         </Button>
       </div>
       <div>
@@ -41,7 +41,7 @@ export default function Navigation({ isFavorite, setIsFavorite }: Props) {
           sx={{ color: isFavorite ? 'red' : 'black', border: 'none', background: 'none' }}
           className="nav-btn"
         >
-          <FavoriteIcon></FavoriteIcon>
+          <FavoriteIcon />
         </Button>
       </div>
       <div>
@@ -50,12 +50,12 @@ export default function Navigation({ isFavorite, setIsFavorite }: Props) {
           className="nav-btn"
           onClick={openModal}
         >
-          <AddBoxIcon></AddBoxIcon>
+          <AddBoxIcon />
         </Button>
       </div>
       <div>
         <Button sx={{ color: 'black', border: 'none', background: 'none' }} className="nav-btn">
-          <BookmarkBorderIcon></BookmarkBorderIcon>
+          <BookmarkBorderIcon />
         </Button>
       </div>
 
@@ -66,10 +66,10 @@ export default function Navigation({ isFavorite, setIsFavorite }: Props) {
           sx={{ color: 'black', border: 'none', background: 'none' }}
           className="nav-btn"
         >
-          <LogoutIcon></LogoutIcon>
+          <LogoutIcon />
         </Button>
       </div>
-      <AddList isOpen={isOpen} closeModal={closeModal}></AddList>
+      <AddList isOpen={isOpen} closeModal={closeModal} />
     </div>
   );
 }

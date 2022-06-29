@@ -28,19 +28,6 @@ const style = {
 
 export default function AddList({ isOpen, closeModal }: Props) {
   const dispatch = useDispatch();
-  const addItem = () => {
-    dispatch(
-      addItemStart({
-        listTitle: state.listTitle,
-        category: state.category,
-        isFavorites: state.isFavorites,
-        listItem: state.listItem,
-        date: state.date,
-      })
-    );
-    closeModal();
-  };
-
   const initialState = {
     listTitle: '',
     category: '',
@@ -56,13 +43,25 @@ export default function AddList({ isOpen, closeModal }: Props) {
   };
   const [state, setState] = useState<ItemType>(initialState);
 
+  const addItem = () => {
+    dispatch(
+      addItemStart({
+        listTitle: state.listTitle,
+        category: state.category,
+        isFavorites: state.isFavorites,
+        listItem: state.listItem,
+        date: state.date,
+      })
+    );
+    closeModal();
+  };
+
   const handleChange = (newValue: Date | null) => {
     setState({ ...state, date: newValue?.toISOString() || initialState.date })
   };
   const toggleFavorite = () => {
     setState({ ...state, isFavorites: !state.isFavorites });
   };
-
   const addSubTask = () => {
     const newSubTask = {
       id: uuidv4(),
@@ -101,10 +100,10 @@ export default function AddList({ isOpen, closeModal }: Props) {
               }}
               onClick={toggleFavorite}
             >
-              <FavoriteIcon></FavoriteIcon>
+              <FavoriteIcon />
             </Button>
             <Button sx={{ border: 'none', padding: '0', color: 'black' }} onClick={closeModal}>
-              <ClearIcon></ClearIcon>
+              <ClearIcon />
             </Button>
           </div>
         </Container>
@@ -167,7 +166,7 @@ export default function AddList({ isOpen, closeModal }: Props) {
           </div>
           <div className="text-align-center">
             <Button sx={{ color: 'black', marginTop: 10 }} onClick={addSubTask}>
-              <AddBoxIcon></AddBoxIcon>
+              <AddBoxIcon />
             </Button>
           </div>
           <div>

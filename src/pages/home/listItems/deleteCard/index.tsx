@@ -37,10 +37,10 @@ export default function DeleteCard({ item, isOpen, closeModal }: Props) {
       <Box sx={style}>
         <Typography>You sure?</Typography>
         <Button onClick={onDeleteItem}>
-          <ThumbUpAltIcon></ThumbUpAltIcon>
+          <ThumbUpAltIcon />
         </Button>
         <Button onClick={closeModal}>
-          <ClearIcon></ClearIcon>
+          <ClearIcon />
         </Button>
       </Box>
     </Modal>
