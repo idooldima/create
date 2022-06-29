@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { style } from '../auth.styles';
 import { signUpStart } from '../../../store/auth/actions';
+import '../auth.styles.scss'
 
 export default function SignUp() {
   const dispatch = useDispatch();

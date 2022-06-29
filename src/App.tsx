@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
-import './App.css';
+import './App.scss';
 import { getSessionStorageData, ProtectedRoute } from './lib';
 import SignIn from './pages/auth/signIn';
 import SignUp from './pages/auth/signUp';

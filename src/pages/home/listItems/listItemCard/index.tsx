@@ -1,10 +1,10 @@
-import { Button, Card, CardContent, Typography, Container, Checkbox } from '@mui/material';
+import { Button, Card, CardContent, Typography, Container } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import ClearIcon from '@mui/icons-material/Clear';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { ItemType } from '../../../../store/itemLists/types';
+import { ItemType, TaskType } from '../../../../store/itemLists/types';
 import { useEffect, useState } from 'react';
 import DeleteCard from '../deleteCard';
 import EditCard from '../editCard';
@@ -36,6 +36,16 @@ export default function ListItemCard({ item }: Props) {
   const toggleModal = (type: 'deleteModal' | 'editModal') => () => {
     setModals({ ...modals, [type]: !modals[type] });
   };
+
+  const onChangeSubTask = (subTask: TaskType) => {
+    setState({
+      ...state,
+      listItem: state.listItem.map((task) =>
+        task.id === subTask.id ? subTask : task
+      ),
+    });
+  }
+
 
   useEffect(() => {
     dispatch(editListItemStart(state));
@@ -93,7 +103,7 @@ export default function ListItemCard({ item }: Props) {
           {showSubTask ? (
             <div>
               {map(state.listItem, (item) => (
-                <SubTask key={item.id} item={item}></SubTask>
+                <SubTask key={item.id} item={item} onChange={onChangeSubTask}></SubTask>
               ))}
             </div>
           ) : (

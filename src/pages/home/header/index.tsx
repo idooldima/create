@@ -2,6 +2,7 @@ import Navigation from './navigation';
 import Search from './search';
 import EventNoteIcon from '@mui/icons-material/EventNote';
 import { Grid } from '@mui/material';
+import './header.styles.scss'
 type Props = {
   onSearch: (value: string) => void;
   isFavorite: boolean;

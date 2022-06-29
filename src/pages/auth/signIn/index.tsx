@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
 import { Link, useNavigate } from 'react-router-dom';
 import { style } from '../auth.styles';
+import '../auth.styles.scss'
 
 export default function SignIn() {
   const dispatch = useDispatch();
