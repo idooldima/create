@@ -12,24 +12,14 @@ import {
   editListItemSuccess,
 } from './actions';
 import { SagaActionType } from '../types';
-import axios from 'axios';
+import axios from '../../api';
 import { ItemsTypes, ItemType } from './types';
 import { itemListSelector } from './selectors';
 import { currentUserSelector } from '../auth/selectors';
 
 export const itemListSaga = function* ({ payload }: SagaActionType<ItemType>): SagaIterator {
   try {
-    const user = yield select(currentUserSelector);
-    const result = yield call(
-      axios.post,
-      'https://your-list-app.herokuapp.com/api/list',
-      { ...payload },
-      {
-        headers: {
-          Authorization: `Bearer ${user.accessToken}`,
-        },
-      }
-    );
+    const result = yield call(axios.post, 'list', payload);
     yield put(addItemSuccess(result.data.listData));
   } catch (error: any) {
     yield put(addItemError(error));
@@ -38,17 +28,8 @@ export const itemListSaga = function* ({ payload }: SagaActionType<ItemType>): S
 
 export const deleteListItemSaga = function* ({ payload }: SagaActionType<string>): SagaIterator {
   try {
-    const user = yield select(currentUserSelector);
     const items = yield select(itemListSelector);
-    const result = yield call(
-      axios.delete,
-      `https://your-list-app.herokuapp.com/api/list/${payload}`,
-      {
-        headers: {
-          Authorization: `Bearer ${user.accessToken}`,
-        },
-      }
-    );
+    const result = yield call(axios.delete, `list/${payload}`);
     const newItems = items.filter((item: ItemType) => item._id !== payload);
     yield put(deleteListItemSuccess(newItems));
   } catch (error: any) {
@@ -58,18 +39,8 @@ export const deleteListItemSaga = function* ({ payload }: SagaActionType<string>
 
 export const editListItemSaga = function* ({ payload }: SagaActionType<ItemType>): SagaIterator {
   try {
-    const user = yield select(currentUserSelector);
     const items = yield select(itemListSelector);
-    const result = yield call(
-      axios.put,
-      `https://your-list-app.herokuapp.com/api/list/${payload._id}`,
-      { ...payload },
-      {
-        headers: {
-          Authorization: `Bearer ${user.accessToken}`,
-        },
-      }
-    );
+    const result = yield call(axios.put, `list/${payload._id}`, payload);
     const newItems = items.map((item: ItemType) => (item._id === payload._id ? payload : item));
 
     yield put(editListItemSuccess(newItems));

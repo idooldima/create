@@ -10,4 +10,8 @@ export const signUpStart = createAction<Credentials>('SIGN_UP_START');
 export const signUpSuccess = createAction<User>('SIGN_UP_SUCCESS');
 export const signUpError = createAction<ErrorType>('SIGN_UP_ERROR');
 
+export const refreshTokenStart = createAction('REFRESH_TOKEN_START');
+export const refreshTokenSucess = createAction<User>('REFRESH_TOKEN_SUCCESS');
+export const refreshTokenError = createAction<ErrorType>('REFRESH_TOKEN_ERROR');
+
 export const logout = createAction('LOGOUT');

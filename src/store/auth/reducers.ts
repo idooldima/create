@@ -8,6 +8,9 @@ import {
   signUpSuccess,
   signUpError,
   logout,
+  refreshTokenStart,
+  refreshTokenSucess,
+  refreshTokenError,
 } from './actions';
 import { AuthStateType, User } from './types';
 import { ErrorType } from '../types';
@@ -48,6 +51,17 @@ export const onLogout = () => ({
   ...initialState,
 });
 
+export const onRefreshTokenStart = (state: AuthStateType) => ({
+  ...state,
+});
+export const onRefreshTokenSuccess = (state: AuthStateType, payload: User) => ({
+  ...state,
+  currentUser: payload,
+});
+export const onRefreshTokenError = (state: AuthStateType) => ({
+  ...state,
+});
+
 export const authReducer = createReducer<AuthStateType>({}, initialState)
   .on(signInStart, onSignInStart)
   .on(signInSuccess, onSignInSuccess)
@@ -55,6 +69,9 @@ export const authReducer = createReducer<AuthStateType>({}, initialState)
   .on(signUpStart, onSignUpStart)
   .on(signUpSuccess, onSignUpSuccess)
   .on(signUpError, onSignUpError)
-  .on(logout, onLogout);
+  .on(logout, onLogout)
+  .on(refreshTokenStart, onRefreshTokenStart)
+  .on(refreshTokenSucess, onRefreshTokenSuccess)
+  .on(refreshTokenError, onRefreshTokenError);
 
 export default authReducer;

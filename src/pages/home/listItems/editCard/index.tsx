@@ -48,7 +48,7 @@ export default function EditCard({ item, isOpen, closeModal }: Props) {
           <Typography variant="h4">{item.listTitle}</Typography>
           <div className="nav-btn">
             <Button
-              sx={[style.isFavoriteBtn, { color: state.isFavorites ? 'red' : 'black', }]}
+              sx={[style.isFavoriteBtn, { color: state.isFavorites ? 'red' : 'black' }]}
               onClick={toggleFavorite}
             >
               <FavoriteIcon></FavoriteIcon>

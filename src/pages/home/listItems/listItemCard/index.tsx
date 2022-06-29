@@ -14,6 +14,7 @@ import { map } from 'lodash';
 import { format } from 'date-fns';
 import SubTask from './subTask';
 import { style } from './listItemCard.styles';
+import { refreshTokenStart } from '../../../../store/auth/actions';
 type Props = { item: ItemType };
 
 export default function ListItemCard({ item }: Props) {
@@ -40,12 +41,9 @@ export default function ListItemCard({ item }: Props) {
   const onChangeSubTask = (subTask: TaskType) => {
     setState({
       ...state,
-      listItem: state.listItem.map((task) =>
-        task.id === subTask.id ? subTask : task
-      ),
+      listItem: state.listItem.map((task) => (task.id === subTask.id ? subTask : task)),
     });
-  }
-
+  };
 
   useEffect(() => {
     dispatch(editListItemStart(state));

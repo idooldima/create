@@ -86,7 +86,10 @@ export default function AddList({ isOpen, closeModal }: Props) {
         <Container sx={style.container}>
           <Typography variant="h4">Card</Typography>
           <div className="nav-btn">
-            <Button sx={[style.buttonIsfavorite, { color: state.isFavorites ? 'red' : 'black' }]} onClick={toggleFavorite}>
+            <Button
+              sx={[style.buttonIsfavorite, { color: state.isFavorites ? 'red' : 'black' }]}
+              onClick={toggleFavorite}
+            >
               <FavoriteIcon />
             </Button>
             <Button sx={style.buttonClose} onClick={closeModal}>
@@ -171,9 +174,15 @@ export default function AddList({ isOpen, closeModal }: Props) {
           <div>
             <Button
               disabled={
-                !state.listTitle || !state.category || !!validateState.errCategory || !!validateState.errTitle
+                !state.listTitle ||
+                !state.category ||
+                !!validateState.errCategory ||
+                !!validateState.errTitle
               }
-              onClick={addItem} fullWidth sx={style.addTaskBtn}>
+              onClick={addItem}
+              fullWidth
+              sx={style.addTaskBtn}
+            >
               SAVE
             </Button>
           </div>
