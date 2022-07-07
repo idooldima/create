@@ -27,7 +27,9 @@ export default function ListItemCard({ item }: Props) {
   });
 
   const toggleFavorite = () => {
-    setState({ ...state, isFavorites: !state.isFavorites });
+    const updateItems = { ...state, isFavorites: !state.isFavorites }
+    setState(updateItems)
+    dispatch(editListItemStart(updateItems))
   };
 
   const toggleShowSubTask = () => {
@@ -39,15 +41,13 @@ export default function ListItemCard({ item }: Props) {
   };
 
   const onChangeSubTask = (subTask: TaskType) => {
-    setState({
+    const updateItems = {
       ...state,
       listItem: state.listItem.map((task) => (task.id === subTask.id ? subTask : task)),
-    });
+    }
+    setState(updateItems)
+    dispatch(editListItemStart(updateItems));
   };
-
-  useEffect(() => {
-    dispatch(editListItemStart(state));
-  }, [state]);
 
   useEffect(() => {
     setState(item);

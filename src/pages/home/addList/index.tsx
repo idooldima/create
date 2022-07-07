@@ -1,4 +1,4 @@
-import { Modal, Box, Typography, TextField, Button } from '@mui/material';
+import { Modal, Box, Typography, TextField, Button, DialogContent, Dialog } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import ClearIcon from '@mui/icons-material/Clear';
 import { Container } from '@mui/system';
@@ -18,6 +18,7 @@ type Props = { isOpen: boolean; closeModal: () => void };
 
 export default function AddList({ isOpen, closeModal }: Props) {
   const dispatch = useDispatch();
+  // const [scroll, setScroll] = React.useState<DialogProps['scroll']>('paper');
   const initialState = {
     listTitle: '',
     category: '',
@@ -76,118 +77,122 @@ export default function AddList({ isOpen, closeModal }: Props) {
   }, [isOpen]);
 
   return (
-    <Modal
+    <Dialog
+      scroll={'body'}
+      disableScrollLock={true}
       onClose={closeModal}
       open={isOpen}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style.box}>
-        <Container sx={style.container}>
-          <Typography variant="h4">Card</Typography>
-          <div className="nav-btn">
-            <Button
-              sx={[style.buttonIsfavorite, { color: state.isFavorites ? 'red' : 'black' }]}
-              onClick={toggleFavorite}
-            >
-              <FavoriteIcon />
-            </Button>
-            <Button sx={style.buttonClose} onClick={closeModal}>
-              <ClearIcon />
-            </Button>
-          </div>
-        </Container>
-        <Container>
-          <Typography sx={style.alignCenter}>Title of your card</Typography>
-          <TextField
-            onChange={({ target: { value } }) => {
-              setState({ ...state, listTitle: value });
-              schema
-                .validateAt('title', { title: value })
-                .then(() => setValidateState({ ...validateState, errTitle: '' }))
-                .catch(function (err) {
-                  setValidateState({ ...validateState, errTitle: err.errors[0] });
-                });
-            }}
-            fullWidth
-            sx={style.marginBottom}
-          ></TextField>
-          <Typography>Select category and date</Typography>
-          <Typography>Also you can create your own category in navbar menu</Typography>
-          <div>
+      <DialogContent >
+        <Box >
+          <Container sx={style.container}>
+            <Typography variant="h4">Card</Typography>
+            <div className="nav-btn">
+              <Button
+                sx={[style.buttonIsfavorite, { color: state.isFavorites ? 'red' : 'black' }]}
+                onClick={toggleFavorite}
+              >
+                <FavoriteIcon />
+              </Button>
+              <Button sx={style.buttonClose} onClick={closeModal}>
+                <ClearIcon />
+              </Button>
+            </div>
+          </Container>
+          <Container>
+            <Typography sx={style.alignCenter}>Title of your card</Typography>
             <TextField
               onChange={({ target: { value } }) => {
-                setState({ ...state, category: value });
+                setState({ ...state, listTitle: value });
                 schema
-                  .validateAt('category', { category: value })
-                  .then(() => setValidateState({ ...validateState, errCategory: '' }))
+                  .validateAt('title', { title: value })
+                  .then(() => setValidateState({ ...validateState, errTitle: '' }))
                   .catch(function (err) {
-                    setValidateState({ ...validateState, errCategory: err.errors[0] });
+                    setValidateState({ ...validateState, errTitle: err.errors[0] });
                   });
               }}
-              sx={style.marginBottom}
-            >
-              {' '}
-            </TextField>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DesktopDatePicker
-                inputFormat="MM/dd/yyyy"
-                value={new Date(state.date)}
-                onChange={handleChange}
-                renderInput={(params) => <TextField {...params} />}
-              />
-            </LocalizationProvider>
-          </div>
-          <Typography sx={style.alignCenter}>Add some cards items</Typography>
-          <div>
-            {map(state.listItem, (item) => (
-              <div className="display-flex align-items" key={item.id}>
-                <TextField
-                  onChange={({ target: { value } }) => {
-                    setState({
-                      ...state,
-                      listItem: state.listItem.map((task) =>
-                        task.id === item.id ? { ...task, task: value } : task
-                      ),
-                    });
-                  }}
-                  sx={style.subTaskInput}
-                ></TextField>
-                <Button
-                  onClick={() =>
-                    setState({
-                      ...state,
-                      listItem: state.listItem.filter((task) => task.id !== item.id),
-                    })
-                  }
-                >
-                  X
-                </Button>
-              </div>
-            ))}
-          </div>
-          <div className="text-align-center">
-            <Button sx={style.addSubTaskBtn} onClick={addSubTask}>
-              <AddBoxIcon />
-            </Button>
-          </div>
-          <div>
-            <Button
-              disabled={
-                !state.listTitle ||
-                !state.category ||
-                !!validateState.errCategory ||
-                !!validateState.errTitle
-              }
-              onClick={addItem}
               fullWidth
-              sx={style.addTaskBtn}
-            >
-              SAVE
-            </Button>
-          </div>
-        </Container>
-      </Box>
-    </Modal>
+              sx={style.marginBottom}
+            ></TextField>
+            <Typography>Select category and date</Typography>
+            <Typography>Also you can create your own category in navbar menu</Typography>
+            <div>
+              <TextField
+                onChange={({ target: { value } }) => {
+                  setState({ ...state, category: value });
+                  schema
+                    .validateAt('category', { category: value })
+                    .then(() => setValidateState({ ...validateState, errCategory: '' }))
+                    .catch(function (err) {
+                      setValidateState({ ...validateState, errCategory: err.errors[0] });
+                    });
+                }}
+                sx={style.marginBottom}
+              >
+                {' '}
+              </TextField>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DesktopDatePicker
+                  inputFormat="MM/dd/yyyy"
+                  value={new Date(state.date)}
+                  onChange={handleChange}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </LocalizationProvider>
+            </div>
+            <Typography sx={style.alignCenter}>Add some cards items</Typography>
+            <div>
+              {map(state.listItem, (item) => (
+                <div className="display-flex align-items" key={item.id}>
+                  <TextField
+                    onChange={({ target: { value } }) => {
+                      setState({
+                        ...state,
+                        listItem: state.listItem.map((task) =>
+                          task.id === item.id ? { ...task, task: value } : task
+                        ),
+                      });
+                    }}
+                    sx={style.subTaskInput}
+                  ></TextField>
+                  <Button
+                    onClick={() =>
+                      setState({
+                        ...state,
+                        listItem: state.listItem.filter((task) => task.id !== item.id),
+                      })
+                    }
+                  >
+                    X
+                  </Button>
+                </div>
+              ))}
+            </div>
+            <div className="text-align-center">
+              <Button sx={style.addSubTaskBtn} onClick={addSubTask}>
+                <AddBoxIcon />
+              </Button>
+            </div>
+            <div>
+              <Button
+                disabled={
+                  !state.listTitle ||
+                  !state.category ||
+                  !!validateState.errCategory ||
+                  !!validateState.errTitle
+                }
+                onClick={addItem}
+                fullWidth
+                sx={style.addTaskBtn}
+              >
+                SAVE
+              </Button>
+            </div>
+          </Container>
+        </Box>
+      </DialogContent>
+    </Dialog>
   );
 }
