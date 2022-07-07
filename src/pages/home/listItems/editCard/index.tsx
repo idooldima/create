@@ -17,7 +17,7 @@ export default function EditCard({ item, isOpen, closeModal }: Props) {
   const [state, setState] = useState(item);
 
   const editItem = () => {
-    dispatch(editListItemStart(state));
+    // dispatch(editListItemStart(state));
     closeModal();
   };
 

@@ -13,7 +13,7 @@ export default function SignIn() {
   const [state, setState] = useState({ email: '', password: '' });
   const [validateState, setValidateState] = useState({ errUsername: '', errPassword: '' });
   const schema = yup.object().shape({
-    email: yup.string().required().min(8),
+    email: yup.string().required().min(8).email(),
     password: yup.string().required().min(8),
   });
   const signIn = () => {

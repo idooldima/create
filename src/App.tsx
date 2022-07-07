@@ -26,8 +26,8 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="*" element={<div className="error404">404!!!</div>} />
-        <Route path="/" element={<SignUp />} />
-        <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/" element={<SignIn />} />
+        <Route path="/sign-in" element={<SignUp />} />
         <Route
           path="/main"
           element={

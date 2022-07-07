@@ -17,7 +17,7 @@ export default function SignUp() {
     errPasswordConfirmation: '',
   });
   const schema = yup.object().shape({
-    email: yup.string().required().min(8),
+    email: yup.string().required().min(8).email(),
     password: yup.string().required().min(8),
     passwordConfirmation: yup
       .string()
